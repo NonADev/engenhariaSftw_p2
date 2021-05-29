@@ -1,42 +1,46 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Login from './pages/login';
+import PageNotFound404 from './pages/errors/pageNotFound404';
+import Home from './pages/home/home';
+import Login from './pages/login/login';
 
 export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            usuario: ""
+            currentPage: 0,
+            usuario: "",
+            saldo: 3200.99
         };
     }
 
-    changeEnvironment(newEnvironment) {
-        this.setState(newEnvironment);
+    changeCurrentPage(page) {
+        this.setState({
+            currentPage: page
+        });
     }
 
-    componentDidUpdate() {
-        console.log(this.state);
+    changeUsuario(usuario) {
+        this.setState({
+            usuario: usuario
+        });
     }
 
     render() {
-        return (
-            <BrowserRouter >
-                <Switch>
-                    <Route path={"/pix"} component={this.pix.bind(this)} />
-                    <Route path={"/home"} component={this.home.bind(this)} />
-                    <Route path={["/login", "/*"]}>
-                        <Login changeEnvironment={this.changeEnvironment.bind(this)} environment={this.state} />
-                    </Route>
-                </Switch>
-            </BrowserRouter>
-        );
-    }
-
-    home() {
-        return <div><p>bem vindo a home {this.state.usuario || 'Guest'}</p></div>;
-    }
-
-    pix() {
-        return <div><p>pix</p></div>;
+        switch (this.state.currentPage) {
+            case 0:
+                return (
+                    <Login  changeUsuario={this.changeUsuario.bind(this)}
+                            changeCurrentPage={this.changeCurrentPage.bind(this)}
+                            environment={this.state} />
+                );
+            case 1:
+                return (
+                    <Home environment={this.state} />
+                )
+            default:
+                return (
+                    <PageNotFound404 environment={this.state}/>
+                );
+        }
     }
 }
