@@ -7,9 +7,8 @@ export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentPage: 0,
-            usuario: "",
-            saldo: 3200.99
+            currentPage: 1,
+            usuario: ""
         };
     }
 
