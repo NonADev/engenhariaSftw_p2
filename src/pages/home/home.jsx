@@ -13,6 +13,8 @@ export default class Home extends React.Component {
             showAdicionarMusica: false,
             showAlterarMusica: false,
 
+            localSearchTxt: '',
+
             localNomeMusica: '',
             localNomeAutor: '',
             localAnoLancamento: '',
@@ -89,7 +91,6 @@ export default class Home extends React.Component {
             anoLancamento: this.state.localEditarAnoLancamento  
         }
         axios.post('http://localhost:8080/update', body).then((resp)=>{
-            console.log(resp);
             this.carregarMusicas();
         }).catch((err)=>{
             console.error(err);
@@ -105,12 +106,29 @@ export default class Home extends React.Component {
         });
     }
 
+    searchMusica() {
+        axios.get(`http://localhost:8080/procurapornome?nome=${this.state.localSearchTxt}`).then((resp)=>{
+            this.setState({
+                showAlterarMusica: true,
+
+                localEditarId: resp.data.id,
+                localEditarNomeMusica: resp.data.nomeMusica,
+                localEditarNomeAutor: resp.data.nomeAutor,
+                localEditarAnoLancamento: resp.data.anoLancamento,
+
+                localSearchTxt: ''
+            });
+        }).catch((e)=>{
+            alert('Música não existente');
+        });
+    }
+
     render() {
         document.body.style.backgroundColor = "#f5f5f5";
         return (
             <div>                
                 <Paper style={{display: 'flex', justifyContent: 'center', height: '55px'}}>
-                    <TextField label="Procurar Música" InputProps={{endAdornment: (<InputAdornment><IconButton><SearchIcon /></IconButton></InputAdornment>)}}/>
+                    <TextField label="Procurar Música" value={this.state.localSearchTxt} onChange={(e)=>this.changeLocalState('localSearchTxt', e)} InputProps={{endAdornment: (<InputAdornment><IconButton onClick={this.searchMusica.bind(this)}><SearchIcon /></IconButton></InputAdornment>)}}/>
                     <Button onClick={()=>this.setState({showAdicionarMusica: true})} style={{height: '40px', marginLeft: '14px',marginTop: '8px'}} variant="contained" color="primary"><AddIcon/></Button>
                 </Paper>
                 <br/>
@@ -161,7 +179,7 @@ export default class Home extends React.Component {
     }
 
     changeLocalState(campo, evento, maxLenght = -1) {
-        if(maxLenght !== -1 && this.state[campo].length >= maxLenght) 
+        if(evento.nativeEvent.inputType !== "deleteContentBackward" && (maxLenght !== -1 && this.state[campo].length >= maxLenght))
             return;
         this.setState({
             [campo]: evento.target.value

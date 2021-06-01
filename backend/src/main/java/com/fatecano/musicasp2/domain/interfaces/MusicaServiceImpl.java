@@ -11,5 +11,6 @@ public interface MusicaServiceImpl {
     Musica getMusicaById(Integer id) throws NotFoundException;
     Musica salvarMusica(Musica musica);
     Musica updateMusica(Musica musica) throws NotFoundException;
+    Musica findFirstByNome(String musica) throws NotFoundException;
     void deleteMusica(Integer id);
 }

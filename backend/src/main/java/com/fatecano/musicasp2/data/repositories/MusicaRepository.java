@@ -9,5 +9,6 @@ import java.util.Optional;
 @Repository
 public interface MusicaRepository extends JpaRepository<Musica, Integer> {
     Optional<Musica> findFirstById(Integer id);
+    Optional<Musica> findFirstByNomeMusicaContaining(String musica);
     void deleteById(Integer id);
 }

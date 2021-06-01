@@ -20,6 +20,15 @@ public class MusicaController {
         }
     }
 
+    @GetMapping("/procurapornome")
+    public ResponseEntity<?> procuraPorNome(@RequestParam String nome) {
+        try {
+            return ResponseEntity.ok(musicaService.findFirstByNome(nome));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new Error(e));
+        }
+    }
+
     @PostMapping("/insert")
     public ResponseEntity<?> insertMusica(@RequestBody Musica musica) {
         try {

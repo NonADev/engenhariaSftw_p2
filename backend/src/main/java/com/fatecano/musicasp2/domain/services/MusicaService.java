@@ -38,6 +38,16 @@ public class MusicaService implements MusicaServiceImpl {
     }
 
     @Override
+    public Musica findFirstByNome(String nomeMusica) throws NotFoundException {
+        Optional<Musica> musica = musicaRepository.findFirstByNomeMusicaContaining(nomeMusica);
+
+        if (musica.isEmpty())
+            throw new NotFoundException("Música não encontrada");
+
+        return musica.get();
+    }
+
+    @Override
     public Musica updateMusica(Musica musica) throws NotFoundException {
         if (musicaRepository.findFirstById(musica.getId()).isEmpty())
             throw new NotFoundException("Música não encontrada");
