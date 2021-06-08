@@ -135,6 +135,24 @@ export default class Home extends React.Component {
                 <div style={{display: 'flex', justifyContent: 'center'}}>
                     <List style={{backgroundColor: 'white', width: '65vw'}}>
                         <Divider />
+                        <ListItem style={{textAlign: 'center'}}>
+                            <ListItemText>
+                                ID
+                            </ListItemText>
+                            <ListItemText>
+                                Nome
+                            </ListItemText>
+                            <ListItemText>
+                                Autor
+                            </ListItemText>
+                            <ListItemText>
+                                Ano de Lançamento
+                            </ListItemText>
+                            <ListItemText>
+                                Ações
+                            </ListItemText>
+                        </ListItem>
+                        <Divider />
                         {this.state.arrayMusicas.map((item)=>this.formataMusicaLayout(item))}
                     </List>
                 </div>

@@ -26,7 +26,7 @@ public class MusicaService implements MusicaServiceImpl {
     public Musica getMusicaById(Integer id) throws NotFoundException {
         Optional<Musica> musica = musicaRepository.findFirstById(id);
 
-        if (musica.isEmpty())
+        if (!musica.isPresent())
             throw new NotFoundException("Música não encontrada");
 
         return musicaRepository.findFirstById(id).get();
